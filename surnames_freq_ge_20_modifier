@@ -1,0 +1,39 @@
+import csv
+
+lista_prefijos1 = ["BEN", "DE DE", "DE LOS", "VAN DER",
+                   "DE LAS", "DEL", "DE LA", "DE", "DO", 
+                   "DI", "VAN DER", "VAN DEN", "VAN"]
+
+def prefixPosition_func(line, prefijo):
+    prefixPosition = line.find(prefijo)
+    return prefixPosition
+
+with open('/Users/pedrobonilla/Desktop/Python_Projects/Data_Bases/surnames_freq_ge_20_le_99.csv','r') as baseDatosPocaFrequencia:
+    baseDatosPocaFrequencia_reader = csv.reader(baseDatosPocaFrequencia)
+
+    for line in baseDatosPocaFrequencia_reader:
+        for prefijo in lista_prefijos1:
+            if line[0].find(" "+prefijo+" ") !=-1:
+                #completeLastName=line[0]
+                prefixPosition = prefixPosition_func(line[0], prefijo)
+                testingWordCursor = line[0].find(' ', prefixPosition+len(prefijo)+1)
+                if testingWordCursor != -1:
+                    #The space is not located in the last character of the string.
+                    lastName = line[0][prefixPosition:testingWordCursor]
+                    lastNameIndex = baseDatosPocaFrequencia_reader.line_num
+                    if (lastName =='DE LA' or lastName == 'DE LAS'
+                        or lastName == 'DE LOS'):
+                        continue
+                else:
+                    #The space is located in the last character of the string.
+                    lastName = line[0][prefixPosition:]
+                    lastNameIndex = baseDatosPocaFrequencia_reader.line_num
+                print(line[0], lastName, lastNameIndex)
+                
+            else:
+                continue
+print("Goodbye")
+        
+        
+        
+
